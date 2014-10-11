@@ -26,6 +26,11 @@ function getBinary(fileData){
         options = null;
 
     fileData = JSON.parse(fileData);
+
+    if (fileData.error) {
+        return this.emit('error', fileData.error);
+    }
+
 	urlData  = url.parse(fileData.dest);
 	options  = {
 		host: urlData.host,
