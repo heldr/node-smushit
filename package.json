@@ -11,6 +11,9 @@
     "compressor",
     "compression"
   ],
+  "scripts": {
+    "test": "node test/run"
+  },
   "directories": {
     "lib": "./lib"
   },
