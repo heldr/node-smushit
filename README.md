@@ -1,4 +1,4 @@
-smosh
+smosh [![Build Status](https://travis-ci.org/heldr/smosh.svg?branch=master)](https://travis-ci.org/heldr/smosh)
 =====
 
 A middleware between smushit and streams
