@@ -12,6 +12,7 @@ function dumpImage(fileData, response){
     response.setEncoding('binary')
     response.on('data', function(chunk){
         data += chunk;
+        self.emit('data', chunk);
     });
     response.on('end', function(){
         var fileBuffer = new Buffer(data, 'binary');
