@@ -17,6 +17,9 @@
   "directories": {
     "lib": "./lib"
   },
+  "files": [
+    "index.js"
+  ],
   "main": "smosh",
   "engines": {
     "node": ">= 0.10"
