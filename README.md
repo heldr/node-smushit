@@ -1,45 +1,27 @@
-node-smushit
+smosh
 =====
 
-using smush.it service to optimize image(s) in node
+A middleware between smushit and streams
 
 How to use?
 ------------
 
-install by NPM
-
 ```shell
-npm install node-smushit
+npm install smosh
 ```
-
-use it in node
 
 ```javascript
-var smushit = require('node-smushit');
-//smash a single file
-smushit.smushit('images/need-to-smash.png');
+var smosh = require('smosh'),
+    file  = smosh(oldBuffer);
 
-//smash files
-smushit.smushit(['file1', 'fiel2', ..]);
+file.on('end', function(newBuffer) {
+    // file content
+    console.log(newBuffer.toString());
+});
 
-//smash images in directory
-smushit.smushit('images-folder-path');
-
-//smash images in directory or the child-directories with recursive
-smushit.smushit('images-folder-path', {recursive: true});
+file.on('error', function(err) {
+    throw err;
+});
 ```
 
-use smushit in shell
-
-```shell
-//view help
-smushit -h
-
-//smash files or directory
-smushit file1 file2 file3
-
-//with recursive
-smushit file1 file2 file3 -R
-```
-
-
+Based on: [node-smushit](https://github.com/colorhook/node-smushit)

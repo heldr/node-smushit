@@ -1,24 +1,27 @@
 {
-  "name": "node-smushit",
-  "version": "0.1.0",
-  "author": "colorhook <colorhook@gmail.com>",
-	
+  "name": "smosh",
+  "version": "0.0.1",
+  "author": "Helder Santana",
   "repository": {
-	"type": "git",
-	"url": "http://github.com/colorhook/node-smushit"
+    "type": "git",
+    "url": "http://github.com/heldr/smosh"
   },
-  "dependencies": {
-	"optimist": ">= 0.2.6"
+  "keywords": [
+    "image",
+    "compressor",
+    "compression"
+  ],
+  "directories": {
+    "lib": "./lib"
   },
-  "keywords": ["image", "compressor", "compression"],
-  "directories" : { "lib" : "./lib" },
-  "bin" : { "smushit" : "./cli.js" },
-  "main" : "smushit",
-  "engines": { "node": ">= 0.6.7" },
+  "main": "smosh",
+  "engines": {
+    "node": ">= 0.10"
+  },
   "licenses": [
-	{
-		"type": "BSD",
-		"url": "LICENSE"
-	}
+    {
+      "type": "MIT",
+      "url": "LICENSE"
+    }
   ]
 }
