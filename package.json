@@ -1,6 +1,6 @@
 {
   "name": "smosh",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "author": "Helder Santana",
   "repository": {
     "type": "git",
@@ -18,7 +18,8 @@
     "lib": "./lib"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "lib"
   ],
   "main": "smosh",
   "engines": {
