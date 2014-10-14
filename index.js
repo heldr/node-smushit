@@ -1,3 +1,5 @@
+'use strict';
+
 var serviceInfo  = {
         host: 'www.smushit.com',
         path: '/ysmush.it/ws.php'

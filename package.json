@@ -12,7 +12,7 @@
     "compression"
   ],
   "scripts": {
-    "test": "node test/run"
+    "test": "jshint index.js test lib && node test/run"
   },
   "directories": {
     "lib": "./lib"
