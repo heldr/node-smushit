@@ -11,25 +11,27 @@ var smosh       = require('../'),
 smosh(jpg)
     .on('data', function(chunk) {
         assert(typeof chunk === 'string');
+        console.log('JPG chunk', chunk.length);
     })
     .on('end', function(newFile, data) {
         assert(newFile instanceof Buffer);
         assert(newFile.toString() !== '');
         assert.equal(jpgExpected.length, newFile.length);
         assert.equal(data.percent, '2.96');
-        console.log('optimize JPG');
+        console.log('optimized JPG');
     });
 
 smosh(png)
     .on('data', function(chunk) {
         assert(typeof chunk === 'string');
+        console.log('PNG chunk', chunk.length);
     })
     .on('end', function(newFile, data) {
         assert(newFile instanceof Buffer);
         assert(newFile.toString() !== '');
         assert.equal(pngExpected.length, newFile.length);
         assert.equal(data.percent, '36.46');
-        console.log('optimize PNG');
+        console.log('optimized PNG');
     });
 
 smosh(jpgExpected).on('error', function(msg) {

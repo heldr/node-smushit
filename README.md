@@ -12,11 +12,19 @@ npm install smosh
 
 ```javascript
 var smosh = require('smosh'),
-    file  = smosh(oldBuffer);
+    file  = smosh(oldBuffer),
+    data  = '';
+
+file.on('data', function(chunk) {
+    // file chunk stream
+    data += chunk;
+});
 
 file.on('end', function(newBuffer) {
     // file content
     console.log(newBuffer.toString());
+    // or if data is streamed
+    console.log(data);
 });
 
 file.on('error', function(err) {
