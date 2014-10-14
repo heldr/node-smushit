@@ -7,7 +7,7 @@ How to use?
 ------------
 
 ```shell
-npm install smosh
+npm install smosh --save
 ```
 
 ```javascript
@@ -31,5 +31,10 @@ file.on('error', function(err) {
     throw err;
 });
 ```
+
+## License
+
+MIT © [Helder Santana](https://github.com/heldr)
+
 
 Based on: [node-smushit](https://github.com/colorhook/node-smushit)
