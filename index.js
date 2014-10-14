@@ -1,118 +1,48 @@
-var http 		 = require("http"),
-    url          = require('url'),
+var serviceInfo  = {
+        host: 'www.smushit.com',
+        path: '/ysmush.it/ws.php'
+    },
+    WebService   = require('./lib/WebService'),
+    ImageFile    = require('./lib/ImageFile'),
     EventEmitter = require('events').EventEmitter;
 
-var SMUSH_HOST = 'www.smushit.com',
-    SMUSH_HOST_PATH = "/ysmush.it/ws.php";
+var Smosh = function (fileBuffer) {
+        var smushit = null;
 
-function dumpImage(fileData, response){
-    var data = '',
-        self = this;
+        EventEmitter.call(this);
 
-    response.setEncoding('binary')
-    response.on('data', function(chunk){
-        data += chunk;
-        self.emit('data', chunk);
-    });
-    response.on('end', function(){
-        var fileBuffer = new Buffer(data, 'binary');
+        if (!(this instanceof Smosh)) {
+            smushit = new Smosh();
 
-        self.emit('end', fileBuffer, fileData);
-    });
-}
+            return smushit.init(fileBuffer);
+        }
+    },
+    onDownload = function (file, fileInfo) {
+        var fileBuffer = new Buffer(file, 'binary');
 
-function getBinary(fileData){
-    var urlData = null,
-        request = null,
-        options = null;
+        this.emit('end', fileBuffer, fileInfo);
+    },
+    onOptimize = function (fileInfo) {
+        var imageFile = new ImageFile(fileInfo);
 
-    fileData = JSON.parse(fileData);
-
-    if (fileData.error) {
-        return this.emit('error', fileData.error);
-    }
-
-	urlData  = url.parse(fileData.dest);
-	options  = {
-		host: urlData.host,
-        port: urlData.port,
-        path: urlData.pathname
-	};
-	request = http.get(options, dumpImage.bind(this, fileData));
-
-	request.on("error", onError.bind(this));
-};
-
-function getPostData(fileBuffer){
-    var doubleDash = '--',
-        boundary   = '------multipartformboundary' + (new Date).getTime();
-
-    return {
-        contentType: 'multipart/form-data; boundary=' + boundary,
-        builder: [
-            [doubleDash, boundary].join(''),
-            'Content-Disposition: form-data; name="files"; filename="buffer"',
-            'Content-Type: application/octet-stream',
-            '',
-            fileBuffer.toString('binary'),
-            [doubleDash, boundary, doubleDash].join(''),
-            ''
-        ].join('\r\n')
+        imageFile
+            .on('data', this.emit.bind(this, 'data'))
+            .on('error', this.emit.bind(this, 'error'))
+            .on('end', onDownload.bind(this))
+            .get();
     };
-}
-
-function onEnd() {
-    this.emit('end', responseBuffer);
-}
-
-function onError(err) {
-    this.emit('error', err);
-}
-
-function onRequestCompleted(response) {
-    var self    = this,
-        respBuf = '';
-
-    response.on('data', function(chunk) {
-        respBuf += chunk;
-    });
-    response.on('end', function () {
-        getBinary.call(self, respBuf);
-    });
-}
-
-function Smosh(fileBuffer) {
-    var smushit = null;
-
-    EventEmitter.call(this);
-
-    if (!(this instanceof Smosh)) {
-        smushit = new Smosh();
-
-        return smushit.run(fileBuffer);
-    }
-};
 
 Smosh.prototype = Object.create(EventEmitter.prototype);
-Smosh.prototype.run = function(fileBuffer) {
 
-    var postData = getPostData(fileBuffer),
-        options = {
-            host: SMUSH_HOST,
-            path: SMUSH_HOST_PATH,
-            method: "POST",
-            headers: {
-              'Content-Type': postData.contentType,
-              'Content-Length': postData.builder.length
-            }
-        },
-        httpRequest = http.request(options, onRequestCompleted.bind(this));
+Smosh.prototype.init = function (fileBuffer) {
+    var webService = new WebService(serviceInfo);
 
-    httpRequest.write(postData.builder, "binary");
-    httpRequest.end();
-    httpRequest.on('error', onError.bind(this));
+    webService
+        .on('end', onOptimize.bind(this))
+        .on('error', this.emit.bind(this, 'error'))
+        .execute(fileBuffer);
 
     return this;
-}
+};
 
 module.exports = Smosh;
