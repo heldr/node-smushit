@@ -12,7 +12,7 @@ npm install smosh --save
 
 ```javascript
 var smosh = require('smosh'),
-    file  = smosh(oldBuffer),
+    file  = smosh(oldBuffer), // can be vinyl files
     data  = '';
 
 file.on('data', function(chunk) {
@@ -20,11 +20,13 @@ file.on('data', function(chunk) {
     data += chunk;
 });
 
-file.on('end', function(newBuffer) {
-    // file content
+file.on('end', function(newBuffer, info) {
+    // file content or vinyl metadata if previously given
     console.log(newBuffer.toString());
     // or if data is streamed
     console.log(data);
+    // percentage compressed
+    console.log(info.percent)
 });
 
 file.on('error', function(err) {

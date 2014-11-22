@@ -19,30 +19,41 @@ var Smosh = function (fileBuffer) {
             return smushit.init(fileBuffer);
         }
     },
-    onDownload = function (file, fileInfo) {
+    onDownload = function (vinyl, file, fileInfo) {
         var fileBuffer = new Buffer(file, 'binary');
+
+        if (vinyl) {
+            vinyl.contents = fileBuffer;
+            fileBuffer     = vinyl;
+        }
 
         this.emit('end', fileBuffer, fileInfo);
     },
-    onOptimize = function (fileInfo) {
+    onOptimize = function (vinyl, fileInfo) {
         var imageFile = new ImageFile(fileInfo);
 
         imageFile
             .on('data', this.emit.bind(this, 'data'))
             .on('error', this.emit.bind(this, 'error'))
-            .on('end', onDownload.bind(this))
+            .on('end', onDownload.bind(this, vinyl))
             .get();
     };
 
 Smosh.prototype = Object.create(EventEmitter.prototype);
 
-Smosh.prototype.init = function (fileBuffer) {
-    var webService = new WebService(serviceInfo);
+Smosh.prototype.init = function (file) {
+    var webService = new WebService(serviceInfo),
+        vinyl      = false;
+
+    if (file.contents && file.isBuffer()) {
+        vinyl = file;
+        file  = file.contents;
+    }
 
     webService
-        .on('end', onOptimize.bind(this))
+        .on('end', onOptimize.bind(this, vinyl))
         .on('error', this.emit.bind(this, 'error'))
-        .execute(fileBuffer);
+        .execute(file);
 
     return this;
 };
