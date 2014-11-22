@@ -19,6 +19,9 @@ var Smosh = function (fileBuffer) {
             return smushit.init(fileBuffer);
         }
     },
+    onError = function (vinyl, msg) {
+        this.emit('error', msg, vinyl);
+    },
     onDownload = function (vinyl, file, fileInfo) {
         var fileBuffer = new Buffer(file, 'binary');
 
@@ -34,7 +37,7 @@ var Smosh = function (fileBuffer) {
 
         imageFile
             .on('data', this.emit.bind(this, 'data'))
-            .on('error', this.emit.bind(this, 'error'))
+            .on('error', onError.bind(this, vinyl))
             .on('end', onDownload.bind(this, vinyl))
             .get();
     };
