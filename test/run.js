@@ -8,23 +8,10 @@ var smosh       = require('../'),
     jpgExpected = new Buffer(fs.readFileSync(path.join(__dirname, 'expected/dp.jpg'))),
     png         = new Buffer(fs.readFileSync(path.join(__dirname, 'fixtures/dp.png'))),
     pngExpected = new Buffer(fs.readFileSync(path.join(__dirname, 'expected/dp.png'))),
-    vJpg        = new Vinyl({contents: jpg}),
+    vJpg        = new Vinyl({contents: jpg, path: 'fixtures/dp.jpg'}),
     vJpgExp     = new Vinyl({contents: jpgExpected}),
-    vPng        = new Vinyl({contents: png}),
+    vPng        = new Vinyl({contents: png, path: 'fixtures/dp.png'}),
     vPngExp     = new Vinyl({contents: pngExpected});
-
-smosh(jpg)
-    .on('data', function(chunk) {
-        assert(typeof chunk === 'string');
-        console.log('JPG chunk', chunk.length);
-    })
-    .on('end', function(newFile, data) {
-        assert(newFile instanceof Buffer);
-        assert(newFile.toString() !== '');
-        assert.equal(jpgExpected.length, newFile.length);
-        assert.equal(data.percent, '2.96');
-        console.log('optimized JPG');
-    });
 
 smosh(vJpg)
     .on('data', function(chunk) {
@@ -35,22 +22,10 @@ smosh(vJpg)
         assert(newFile instanceof Vinyl);
         assert.notEqual(newFile.isNull(), true);
         assert.equal(vJpgExp.contents.length, newFile.contents.length);
-        assert.equal(data.percent, '2.96');
+        assert.equal(data.percent, '49');
         console.log('optimized Vinyl JPG');
     });
 
-smosh(png)
-    .on('data', function(chunk) {
-        assert(typeof chunk === 'string');
-        console.log('PNG chunk', chunk.length);
-    })
-    .on('end', function(newFile, data) {
-        assert(newFile instanceof Buffer);
-        assert(newFile.toString() !== '');
-        assert.equal(pngExpected.length, newFile.length);
-        assert.equal(data.percent, '36.46');
-        console.log('optimized PNG');
-    });
 
 smosh(vPng)
     .on('data', function(chunk) {
@@ -61,7 +36,7 @@ smosh(vPng)
         assert(newFile instanceof Vinyl);
         assert.notEqual(newFile.isNull(), true);
         assert.equal(vPngExp.contents.length, newFile.contents.length);
-        assert.equal(data.percent, '36.46');
+        assert.equal(data.percent, '55');
         console.log('optimized Vinyl PNG');
     });
 

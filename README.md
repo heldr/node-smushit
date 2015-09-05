@@ -1,7 +1,7 @@
 smosh [![Build Status](https://travis-ci.org/heldr/smosh.svg?branch=master)](https://travis-ci.org/heldr/smosh)
 =====
 
-A middleware between smushit and streams
+A middleware between [resmushit](http://resmush.it/) and streams on top of [vinyl](https://www.npmjs.com/package/vinyl).
 
 How to use?
 ------------
@@ -12,7 +12,7 @@ npm install smosh --save
 
 ```javascript
 var smosh = require('smosh'),
-    file  = smosh(oldBuffer), // can be vinyl files
+    file  = smosh(vinylFile),
     data  = '';
 
 file.on('data', function(chunk) {
@@ -21,7 +21,7 @@ file.on('data', function(chunk) {
 });
 
 file.on('end', function(newBuffer, info) {
-    // file content or vinyl metadata if previously given
+    // vinyl metadata if previously given
     console.log(newBuffer.toString());
     // or if data is streamed
     console.log(data);

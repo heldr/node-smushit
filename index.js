@@ -1,14 +1,14 @@
 'use strict';
 
 var serviceInfo  = {
-        host: 'www.smushit.com',
-        path: '/ysmush.it/ws.php'
+        host: 'www.resmush.it',
+        path: '/ws.php'
     },
     WebService   = require('./lib/WebService'),
     ImageFile    = require('./lib/ImageFile'),
     EventEmitter = require('events').EventEmitter;
 
-var Smosh = function (fileBuffer) {
+var Smosh = function (fileBuffer, extension) {
         var smushit = null;
 
         EventEmitter.call(this);
@@ -16,10 +16,11 @@ var Smosh = function (fileBuffer) {
         if (!(this instanceof Smosh)) {
             smushit = new Smosh();
 
-            return smushit.init(fileBuffer);
+            return smushit.init(fileBuffer, extension);
         }
     },
     onError = function (vinyl, msg) {
+			console.log(arguments);
         this.emit('error', msg, vinyl);
     },
     onDownload = function (vinyl, file, fileInfo) {
@@ -44,19 +45,13 @@ var Smosh = function (fileBuffer) {
 
 Smosh.prototype = Object.create(EventEmitter.prototype);
 
-Smosh.prototype.init = function (file) {
-    var webService = new WebService(serviceInfo),
-        vinyl      = false;
-
-    if (file.contents && file.isBuffer()) {
-        vinyl = file;
-        file  = file.contents;
-    }
+Smosh.prototype.init = function (vinyl) {
+    var webService = new WebService(serviceInfo);
 
     webService
         .on('end', onOptimize.bind(this, vinyl))
         .on('error', this.emit.bind(this, 'error'))
-        .execute(file);
+        .execute(vinyl);
 
     return this;
 };
