@@ -1,6 +1,6 @@
 {
   "name": "smosh",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Helder Santana",
   "repository": {
     "type": "git",
@@ -32,6 +32,6 @@
     }
   ],
   "devDependencies": {
-    "vinyl": "^0.4.5"
+    "vinyl": "^0.5.3"
   }
 }
