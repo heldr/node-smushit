@@ -5,5 +5,4 @@ node_js:
   - "0.12"
   - "0.10"
 before_install:
-  - npm install -g npm
-	- npm install -g jshint
+  - npm install -g npm jshint
