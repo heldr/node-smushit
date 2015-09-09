@@ -4,6 +4,6 @@ node_js:
   - "4"
   - "0.12"
   - "0.10"
-#for node 0.8 build
 before_install:
   - npm install -g npm
+	- npm install -g jshint
