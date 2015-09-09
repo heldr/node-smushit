@@ -11,8 +11,6 @@ var serviceInfo  = {
 var Smosh = function (fileBuffer, extension) {
         var smushit = null;
 
-        EventEmitter.call(this);
-
         if (!(this instanceof Smosh)) {
             smushit = new Smosh();
 
