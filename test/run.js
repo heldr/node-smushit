@@ -22,7 +22,7 @@ smosh(vJpg)
         assert(newFile instanceof Vinyl);
         assert.notEqual(newFile.isNull(), true);
         assert.equal(vJpgExp.contents.length, newFile.contents.length);
-        assert.equal(data.percent, '49');
+        assert.equal(data.percent, '10');
         console.log('optimized Vinyl JPG');
     });
 
@@ -36,7 +36,7 @@ smosh(vPng)
         assert(newFile instanceof Vinyl);
         assert.notEqual(newFile.isNull(), true);
         assert.equal(vPngExp.contents.length, newFile.contents.length);
-        assert.equal(data.percent, '55');
+        assert.equal(data.percent, '72');
         console.log('optimized Vinyl PNG');
     });
 

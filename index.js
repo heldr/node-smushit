@@ -1,7 +1,7 @@
 'use strict';
 
 var serviceInfo  = {
-        host: 'www.resmush.it',
+        host: 'api.resmush.it',
         path: '/ws.php'
     },
     WebService   = require('./lib/WebService'),
